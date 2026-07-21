@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Five Operators — The 12TET's Recurrence | Ukubona Roundtable Archive</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='46' fill='%231C1A17'/%3E%3Ccircle cx='50' cy='16' r='8' fill='%23B45309'/%3E%3Ccircle cx='81' cy='38' r='8' fill='%231D4ED8'/%3E%3Ccircle cx='69' cy='76' r='8' fill='%2315803D'/%3E%3Ccircle cx='31' cy='76' r='8' fill='%236D28D9'/%3E%3Ccircle cx='19' cy='38' r='8' fill='%2344403C'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{  --bg:#F7F5EF; --surface:#FFFFFF; --surface-2:#F0ECE2; --ink:#1C1A17; --ink-soft:#57534E; --ink-faint:#8A8478; --rule:#E4DFD2; --mono-bg:#EFEAE0;  --amber:#B45309; --amber-bg:#FBF0DF;  --blue:#1D4ED8; --blue-bg:#EAF0FE;  --green:#15803D; --green-bg:#E9F6EE;  --violet:#6D28D9; --violet-bg:#F1EAFB;  --graphite:#44403C; --graphite-bg:#EDEAE3;  --red:#B91C1C; --red-bg:#FBEAEA;  --teal:#0E7C86; --teal-bg:#E4F3F3;  --shadow: 0 1px 2px rgba(28,26,23,0.04), 0 8px 24px rgba(28,26,23,0.05);  --radius: 14px;}
+[data-theme="dark"]{  --bg:#151310; --surface:#1E1B16; --surface-2:#252119; --ink:#F2EEE3; --ink-soft:#B8B0A0; --ink-faint:#847C6C; --rule:#332E24; --mono-bg:#211D15;  --amber:#F0A93A; --amber-bg:#2C230F;  --blue:#6E96F5; --blue-bg:#181F30;  --green:#4ADE94; --green-bg:#12261B;  --violet:#B296F0; --violet-bg:#241A33;  --graphite:#CBC4B4; --graphite-bg:#26221A;  --red:#F0716A; --red-bg:#2B1615;  --teal:#5FC7CE; --teal-bg:#122324;  --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 12px 32px rgba(0,0,0,0.35);}
+*{ box-sizing:border-box; }
+html{ scroll-behavior:smooth; }
+body{ margin:0; background:var(--bg); color:var(--ink); font-family:'DM Sans', sans-serif; line-height:1.65; transition:background .35s ease, color .35s ease; }
+::selection{ background:var(--violet-bg); color:var(--violet); }
+a{ color:inherit; }
+a.link{ color:var(--blue); text-decoration-color: color-mix(in srgb, var(--blue) 40%, transparent); text-underline-offset:3px; }
+a.link:hover{ text-decoration-color:var(--blue); }
+.wrap{ max-width:840px; margin:0 auto; padding:0 24px 120px; }
+header.top{ position:sticky; top:0; z-index:50; backdrop-filter: blur(10px); background: color-mix(in srgb, var(--bg) 82%, transparent); border-bottom:1px solid var(--rule); }
+.top-inner{ max-width:840px; margin:0 auto; padding:14px 24px; display:flex; align-items:center; justify-content:space-between; gap:16px; }
+.brand{ display:flex; align-items:center; gap:12px; }
+.mark{ width:34px; height:34px; flex:0 0 auto; animation: spin 26s linear infinite; }
+@media (prefers-reduced-motion: reduce){ .mark{ animation:none; } }
+.brand-text{ font-family:'DM Mono', monospace; font-size:12.5px; letter-spacing:.04em; color:var(--ink-soft); }
+.brand-text strong{ color:var(--ink); font-weight:500; }
+.theme-btn{ border:1px solid var(--rule); background:var(--surface); color:var(--ink); width:34px; height:34px; border-radius:999px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition: transform .2s ease, border-color .2s ease; font-size:15px; }
+.theme-btn:hover{ border-color:var(--ink-faint); transform:translateY(-1px); }
+@keyframes spin{ to{ transform:rotate(360deg); } }
+.hero{ padding:64px 0 28px; }
+.eyebrow{ font-family:'DM Mono', monospace; font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-faint); margin-bottom:18px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+.eyebrow .dot{ width:6px; height:6px; border-radius:999px; background:var(--violet); }
+h1.title{ font-family:'DM Serif Display', serif; font-weight:400; font-style:normal; font-size:clamp(32px,5.2vw,52px); line-height:1.08; margin:0 0 14px; letter-spacing:-0.01em; }
+h1.title em{ font-style:italic; color:var(--violet); }
+.dyad{ font-family:'DM Mono', monospace; font-size:14.5px; color:var(--ink-soft); display:flex; flex-wrap:wrap; gap:8px 18px; margin:8px 0 22px; }
+p.dek{ font-size:17px; color:var(--ink-soft); max-width:64ch; margin:0 0 4px; }
+.legend{ display:flex; flex-wrap:wrap; gap:10px; margin-top:28px; }
+.legend-chip{ font-family:'DM Mono', monospace; font-size:11.5px; letter-spacing:.03em; padding:5px 11px; border-radius:999px; display:flex; align-items:center; gap:7px; border:1px solid var(--rule); color:var(--ink-soft); }
+.legend-chip .sw{ width:8px; height:8px; border-radius:999px; }
+.tabbar{ display:flex; gap:8px; margin:34px 0 -6px; border-bottom:1px solid var(--rule); flex-wrap:wrap; }
+.tab-btn{ font-family:'DM Mono', monospace; font-size:12.5px; letter-spacing:.04em; color:var(--ink-faint); background:none; border:none; cursor:pointer; padding:10px 4px 14px; margin-right:18px; position:relative; transition:color .2s ease; }
+.tab-btn:hover{ color:var(--ink-soft); }
+.tab-btn.active{ color:var(--ink); }
+.tab-btn.active::after{ content:""; position:absolute; left:0; right:0; bottom:-1px; height:2px; background:var(--violet); border-radius:2px; }
+.tab-btn .n{ display:inline-block; opacity:.6; margin-right:6px; }
+.panel{ display:none; }
+.panel.active{ display:block; }
+.sources{ background:var(--surface); border:1px solid var(--rule); border-radius:var(--radius); padding:24px 26px; margin:36px 0; box-shadow:var(--shadow); }
+.sources h2{ font-family:'DM Mono', monospace; font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-faint); margin:0 0 16px; font-weight:500; }
+.sources ol{ margin:0; padding-left:22px; }
+.sources li{ margin-bottom:9px; font-size:14.5px; color:var(--ink-soft); }
+.sources li::marker{ font-family:'DM Mono', monospace; color:var(--ink-faint); font-size:13px; }
+.stat-row{ margin-top:18px; padding-top:18px; border-top:1px dashed var(--rule); display:flex; flex-wrap:wrap; gap:22px; }
+.stat{ font-family:'DM Mono', monospace; }
+.stat .num{ font-size:19px; color:var(--ink); }
+.stat .lab{ font-size:11px; color:var(--ink-faint); text-transform:uppercase; letter-spacing:.06em; }
+.turn{ margin:30px 0; border-radius:var(--radius); overflow:hidden; border:1px solid var(--rule); background:var(--surface); box-shadow:var(--shadow); }
+.turn-head{ display:flex; align-items:center; justify-content:space-between; gap:12px; padding:16px 22px; border-bottom:1px solid var(--rule); }
+.voice{ display:flex; align-items:center; gap:10px; }
+.voice .dot{ width:10px; height:10px; border-radius:999px; flex:0 0 auto; }
+.voice-name{ font-family:'DM Serif Display', serif; font-size:19px; }
+.voice-role{ font-family:'DM Mono', monospace; font-size:11px; color:var(--ink-faint); letter-spacing:.03em; }
+.turn-idx{ font-family:'DM Mono', monospace; font-size:11px; color:var(--ink-faint); }
+.turn-body{ padding:22px 26px 26px; font-size:15.5px; }
+.turn-body.prompt{ font-style:italic; }
+.turn-body p{ margin:0 0 14px; }
+.turn-body p:last-child{ margin-bottom:0; }
+.turn-body h3{ font-family:'DM Sans', sans-serif; font-weight:700; font-size:14px; letter-spacing:.02em; margin:22px 0 10px; color:var(--ink); }
+.turn-body h3:first-child{ margin-top:0; }
+.turn-body ul, .turn-body ol{ margin:0 0 14px; padding-left:22px; }
+.turn-body li{ margin-bottom:6px; }
+.turn-body strong{ font-weight:700; }
+.turn-body code{ font-family:'DM Mono', monospace; font-size:.92em; background:var(--mono-bg); padding:1px 6px; border-radius:5px; }
+.math{ font-family:'DM Mono', monospace; font-size:14px; background:var(--mono-bg); border-radius:10px; padding:14px 18px; margin:14px 0; overflow-x:auto; color:var(--ink); text-align:center; }
+table.map{ width:100%; border-collapse:collapse; margin:14px 0; font-size:14px; }
+table.map th, table.map td{ border:1px solid var(--rule); padding:9px 12px; text-align:left; vertical-align:top; }
+table.map th{ font-family:'DM Mono', monospace; font-size:11.5px; letter-spacing:.03em; text-transform:uppercase; color:var(--ink-faint); background:var(--surface-2); font-weight:500; }
+.closer{ font-family:'DM Mono', monospace; font-size:13px; color:var(--ink-faint); padding-top:14px; margin-top:6px; border-top:1px dashed var(--rule); }
+.turn.xai .turn-head{ background:var(--amber-bg); } .turn.xai .voice .dot{ background:var(--amber); } .turn.xai .voice-name{ color:var(--amber); }
+.turn.google .turn-head{ background:var(--blue-bg); } .turn.google .voice .dot{ background:var(--blue); } .turn.google .voice-name{ color:var(--blue); }
+.turn.anthropic .turn-head{ background:var(--violet-bg); } .turn.anthropic .voice .dot{ background:var(--violet); } .turn.anthropic .voice-name{ color:var(--violet); }
+.turn.ukubona .turn-head{ background:var(--graphite-bg); } .turn.ukubona .voice .dot{ background:var(--graphite); } .turn.ukubona .voice-name{ color:var(--graphite); }
+.turn.openai .turn-head{ background:var(--teal-bg); } .turn.openai .voice .dot{ background:var(--teal); } .turn.openai .voice-name{ color:var(--teal); }
+.turn.ukubona{ border-style:dashed; }
+.thread-label{ display:flex; align-items:center; gap:14px; margin:52px 0 8px; font-family:'DM Mono', monospace; font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-faint); }
+.thread-label::before, .thread-label::after{ content:""; height:1px; background:var(--rule); flex:1; }
+.pentad-strip{ display:flex; gap:8px; margin:26px 0; flex-wrap:wrap; }
+.pchip{ flex:1; min-width:110px; border:1px solid var(--rule); border-radius:12px; padding:12px 14px; background:var(--surface); }
+.pchip .roman{ font-family:'DM Mono', monospace; font-size:11px; color:var(--ink-faint); letter-spacing:.08em; }
+.pchip .op{ font-family:'DM Serif Display', serif; font-size:16.5px; margin-top:2px; }
+.pchip.i{ border-top:3px solid var(--amber); } .pchip.ii{ border-top:3px solid var(--blue); }
+.pchip.iii{ border-top:3px solid var(--red); } .pchip.iv{ border-top:3px solid var(--green); }
+.pchip.v{ border-top:3px solid var(--violet); }
+.verdict-card{ margin:22px 0; border:1px solid var(--rule); border-radius:var(--radius); background:var(--surface); box-shadow:var(--shadow); overflow:hidden; }
+.verdict-head{ display:flex; align-items:center; justify-content:space-between; gap:12px; padding:14px 20px; border-bottom:1px solid var(--rule); background:var(--surface-2); }
+.verdict-head h3{ margin:0; font-family:'DM Sans',sans-serif; font-size:14px; font-weight:700; }
+.badge{ font-family:'DM Mono', monospace; font-size:10.5px; letter-spacing:.06em; text-transform:uppercase; padding:4px 10px; border-radius:999px; white-space:nowrap; }
+.badge.confirmed{ color:var(--green); background:var(--green-bg); }
+.badge.complicated{ color:var(--amber); background:var(--amber-bg); }
+.badge.open{ color:var(--red); background:var(--red-bg); }
+.verdict-body{ padding:18px 20px 20px; display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+@media (max-width:600px){ .verdict-body{ grid-template-columns:1fr; } }
+.vcol .lab{ font-family:'DM Mono', monospace; font-size:10.5px; text-transform:uppercase; letter-spacing:.08em; color:var(--ink-faint); margin-bottom:6px; }
+.vcol p{ margin:0; font-size:14.5px; color:var(--ink-soft); }
+.vcol.predicted p{ font-style:italic; }
+.verdict-note{ padding:0 20px 20px; font-size:14px; color:var(--ink-soft); border-top:1px dashed var(--rule); margin-top:2px; padding-top:14px; }
+footer{ margin-top:70px; padding-top:30px; border-top:1px solid var(--rule); display:flex; flex-direction:column; align-items:center; gap:14px; text-align:center; }
+.footer-mark{ width:30px; height:30px; opacity:.85; }
+.okubala{ font-family:'DM Serif Display', serif; font-style:italic; font-size:19px; color:var(--ink); }
+.footer-meta{ font-family:'DM Mono', monospace; font-size:11.5px; color:var(--ink-faint); letter-spacing:.03em; }
+@media (max-width:600px){  .wrap{ padding:0 16px 90px; } .hero{ padding:44px 0 20px; } .turn-head{ padding:13px 16px; } .turn-body{ padding:18px 16px 20px; } .sources{ padding:18px; }  .stat-row{ gap:16px; }}
+.iframe-container { position: relative; width: 100%; padding-bottom: 56.25%; height: 0; margin-top: 32px; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--rule); }
+.iframe-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
+</style>
+</head>
+<body data-theme="light">
+<header class="top">
+  <div class="top-inner">
+    <div class="brand">
+      <svg class="mark" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="3" fill="var(--ink-faint)"/>
+        <circle cx="50" cy="16" r="7.5" fill="var(--amber)"/>
+        <circle cx="81" cy="38" r="7.5" fill="var(--blue)"/>
+        <circle cx="69" cy="76" r="7.5" fill="var(--green)"/>
+        <circle cx="31" cy="76" r="7.5" fill="var(--violet)"/>
+        <circle cx="19" cy="38" r="7.5" fill="var(--graphite)"/>
+      </svg>
+      <div class="brand-text"><strong>Ukubona</strong> · roundtable archive</div>
+    </div>
+    <button class="theme-btn" id="themeToggle" aria-label="Toggle light and dark theme">◐</button>
+  </div>
+</header>
+<div class="wrap">
+  <section class="hero">
+    <div class="eyebrow"><span class="dot"></span> functional invariants · non-lossy · fully attributed</div>
+    <h1 class="title">The 12TET's <em>Recurrence</em></h1>
+    <div class="dyad"><span>Cartesian</span><span>·</span><span>Jacobian</span><span>·</span><span>Hessian</span><span>·</span><span>Bayesian</span><span>·</span><span>Nietzschean</span></div>
+    <p class="dek">Five operators, one mnemonic, run infinitely: the ii-V-I cadence. By flattening the third of the resulting tonic (I) to convert it into a supertonic (ii) of the next key, the progression becomes a continuous Jacobian mapping across the 12-Tone Equal Temperament system. The resolution is just a toll booth. The cycle wills itself.</p>
+    
+    <div class="iframe-container">
+      <iframe src="https://www.youtube.com/embed/ij2mowI23I4" title="How to play modern 251 chord progressions on piano!" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+
+    <div class="legend">
+      <span class="legend-chip"><span class="sw" style="background:var(--graphite)"></span>Ukubona</span>
+      <span class="legend-chip"><span class="sw" style="background:var(--blue)"></span>Google</span>
+    </div>
+    <div class="tabbar" role="tablist">
+      <button class="tab-btn active" id="tab-thread" data-panel="panel-thread" role="tab" aria-selected="true"><span class="n">I.</span>The Roundtable</button>
+      <button class="tab-btn" id="tab-formalism" data-panel="panel-formalism" role="tab" aria-selected="false"><span class="n">II.</span>The Formalism</button>
+    </div>
+  </section>
+
+  <!-- ================= PANEL I ================= -->
+  <div class="panel active" id="panel-thread">
+  <section class="sources">
+    <h2>Sources</h2>
+    <ol>
+      <li><span>I.</span> <a class="link" href="https://www.youtube.com/shorts/ij2mowI23I4" target="_blank" rel="noopener">PrettySimpleMusic: "How to play modern 251 chord progressions on piano!"</a></li>
+      <li><span>II.</span> The mnemonic: Cartesian (the key) → Jacobian (the ii-V-I modulation) → Hessian (the acceleration/flattened 3rd) → Bayesian (the ear's expectation) → Nietzschean (the eternal cycle)</li>
+      <li><span>III.</span> The 12-Tone Equal Temperament (12TET) architecture</li>
+    </ol>
+    <div class="stat-row">
+      <div class="stat"><div class="num">I, II</div><div class="lab">overdetermined — closed loop</div></div>
+      <div class="stat"><div class="num">III</div><div class="lab">event, not a state — the modal flip</div></div>
+      <div class="stat"><div class="num">IV, V</div><div class="lab">underdetermined — posterior, endless loop</div></div>
+    </div>
+  </section>
+
+  <div class="thread-label">Round one — where the coordinate broke</div>
+  <article class="turn ukubona">
+    <div class="turn-head"><div class="voice"><span class="dot"></span><div><div class="voice-name">Ukubona</div><div class="voice-role">the redirect</div></div></div><div class="turn-idx">01</div></div>
+    <div class="turn-body prompt">
+      <p>Watch the video. Notice the exact structural move she makes: "Got my 2 in C, my 5 in C, my 1 in C (C major 7). Now I turn this into a 2 (C minor 7)... to go to my 5 (F7) to Bb major 7."</p>
+      <p>This is an "eternal recurrence" of ii-V7-I, but it is devastatingly also an exploration of the 12TET. The resolution is never terminal; it immediately becomes the entry point for the next vector. How does the 5-stage compression map onto this harmonic math?</p>
+    </div>
+  </article>
+
+  <article class="turn google">
+    <div class="turn-head"><div class="voice"><span class="dot"></span><div><div class="voice-name">Google</div><div class="voice-role">the coordinate that stopped being singular</div></div></div><div class="turn-idx">02</div></div>
+    <div class="turn-body">
+      <h3>I. The Cartesian problem, before it broke</h3>
+      <p>A functional chord progression sitting safely inside C Major is a purely Cartesian frame. You have your basis vectors: Dm7 (ii), G7 (V), Cmaj7 (I). Legible, overdetermined. The ear doesn't need to argue with the coordinate system because the tonic holds it in place.</p>
+      <h3>II. The Jacobian mapping between frames</h3>
+      <p>What she does at <code>[00:44]</code> breaks the Cartesian frame entirely. You can't just add more numbers to C Major. You have to switch jurisdictions entirely. By altering a single invariant—flattening the E to Eb to turn Cmaj7 into Cm7—the I is transformed into a ii.</p>
+      <p>This operation is the <strong>Jacobian</strong>: the matrix telling you how a change in one key's frame propagates into another. The ii-V-I is no longer a localized event; it is the mathematical bridge that compresses the complexity of 12TET into a repeatable transform. Cmaj7 doesn't resolve; it's a toll booth you pass through to get to Bb Major.</p>
+    </div>
+  </article>
+
+  <div class="thread-label">Round two — the curvature nobody billed for</div>
+  <article class="turn google">
+    <div class="turn-head"><div class="voice"><span class="dot"></span><div><div class="voice-name">Google</div><div class="voice-role">the event, not the state</div></div></div><div class="turn-idx">03</div></div>
+    <div class="turn-body">
+      <h3>III. Hessian — the modal flip</h3>
+      <p>If II is the smooth relation between keys, III is the shock of the transition. When you hit Cmaj7, the ear expects rest. The sudden injection of the minor 3rd (the Eb) is the Hessian event. It is a sudden <em>acceleration</em> of harmonic gravity.</p>
+      <p>It's not a coordinate you stand in; it's the gap detector firing. The system realizes the strain has accelerated past what the C Major frame can absorb, forcing the ear to re-orient its center of gravity. The resolution was a lie.</p>
+    </div>
+  </article>
+
+  <div class="thread-label">Round three — the posterior and the affirmation</div>
+  <article class="turn google">
+    <div class="turn-head"><div class="voice"><span class="dot"></span><div><div class="voice-name">Google</div><div class="voice-role">identity as update rule, not as rest</div></div></div><div class="turn-idx">04</div></div>
+    <div class="turn-body">
+      <h3>IV. Bayesian — the tonic is not a noun</h3>
+      <p>The listener's ear acts as the Bayesian prior. The first time the progression hits Cmaj7, the ear settles. When Cmaj7 becomes Cm7, the prior is violated and updated. The ear learns: <em>the tonic is just a dominant in disguise.</em> The posterior keeps re-forming with each new ii-V-I, realizing that "home" is an illusion.</p>
+      
+      <h3>V. Nietzschean — eternal recurrence</h3>
+      <p>Because the 12TET is a closed circle, if you run this Jacobian operation 12 times, you end up exactly where you started. There is no final resolution, no utopian chord where the progression finally stops. It wills the whole cycle again, undanced by any promise of resolution.</p>
+      <p class="closer">You don't play the 12TET to finish it. You play it to affirm that the cycle itself is the only architecture there is.</p>
+    </div>
+  </article>
+  </div> <!-- /panel-thread -->
+
+  <!-- ================= PANEL II — THE FORMALISM ================= -->
+  <div class="panel" id="panel-formalism">
+  <p class="dek" style="margin-top:32px;">The roundtable's central move applied to 12TET functional harmony: five operators, mapping the endless modulation of a I chord turning into a ii chord.</p>
+
+  <div class="pentad-strip">
+    <div class="pchip i"><div class="roman">I</div><div class="op">Cartesian</div></div>
+    <div class="pchip ii"><div class="roman">II</div><div class="op">Jacobian</div></div>
+    <div class="pchip iii"><div class="roman">III</div><div class="op">Hessian</div></div>
+    <div class="pchip iv"><div class="roman">IV</div><div class="op">Bayesian</div></div>
+    <div class="pchip v"><div class="roman">V</div><div class="op">Nietzschean</div></div>
+  </div>
+
+  <div class="thread-label">Two runs of the same sequence</div>
+  <table class="map">
+    <tr><th>Operator</th><th>12TET Progression Run</th><th>Consultancy run</th></tr>
+    <tr><td>I · Cartesian</td><td>The single key center (e.g., C Major); overdetermined, legible.</td><td>Single-jurisdiction books, pre-globalization</td></tr>
+    <tr><td>II · Jacobian</td><td>The ii-V-I transform; mapping the coordinates to the next key.</td><td>Cross-jurisdiction transform; the Big Eight's original mandate</td></tr>
+    <tr><td>III · Hessian</td><td>Flattening the 3rd (Imaj7 to iim7); the event that forces motion.</td><td>Enron, Tesco, the fabricated court hearing — curvature missed</td></tr>
+    <tr><td>IV · Bayesian</td><td>The ear updating its prior: the tonic is unstable.</td><td>AI collapsing compression cost; the firms' own grave-diggers</td></tr>
+    <tr><td>V · Nietzschean</td><td>Cycling through all 12 keys eternally; no final cadence.</td><td>Sovereignty as computing your own scalar — undanced, open</td></tr>
+  </table>
+
+  <div class="thread-label">The two open coordinates</div>
+  <div class="verdict-card">
+    <div class="verdict-head"><h3>IV — identity as posterior</h3><span class="badge confirmed">underdetermined</span></div>
+    <div class="verdict-body">
+      <div class="vcol"><div class="lab">Conservative Ear</div><p>Minimal update. Hears the modulation as a temporary departure, waiting to return to the original C Major frame.</p></div>
+      <div class="vcol"><div class="lab">Progressive Ear</div><p>Update <em>is</em> the harmony. Hears the transition itself as the "home." Sovereignty computed fresh in every new key signature.</p></div>
+    </div>
+  </div>
+  <div class="verdict-card">
+    <div class="verdict-head"><h3>V — the willed terminus</h3><span class="badge open">unwritten by design</span></div>
+    <div class="verdict-body">
+      <div class="vcol"><div class="lab">The Resolution</div><p>Classical harmony demands a final I chord to close the movement. A teleological arrival.</p></div>
+      <div class="vcol"><div class="lab">The Open Question</div><p>Whether you stop at the toll booth or will the eternal recurrence, letting the I chord become the ii chord forever.</p></div>
+    </div>
+  </div>
+
+  <p class="closer" style="margin-top:26px;">Okubala si Kulaba — you can learn the ii-V-I in one key. You cannot master the architecture until you realize the key itself is just a variable waiting to be reassigned.</p>
+  </div> <!-- /panel-formalism -->
+</div>
+<footer>
+  <svg class="footer-mark" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <circle cx="50" cy="50" r="3" fill="var(--ink-faint)"/>
+    <circle cx="50" cy="16" r="7.5" fill="var(--amber)"/>
+    <circle cx="81" cy="38" r="7.5" fill="var(--blue)"/>
+    <circle cx="69" cy="76" r="7.5" fill="var(--green)"/>
+    <circle cx="31" cy="76" r="7.5" fill="var(--violet)"/>
+    <circle cx="19" cy="38" r="7.5" fill="var(--graphite)"/>
+  </svg>
+  <div class="okubala">Okubala si Kulaba — counting is not seeing</div>
+  <div class="footer-meta">UKUBONA LLC · multi-model roundtable archive · verbatim · non-lossy</div>
+</footer>
+<script>
+(function(){
+  var root = document.body;
+  var btn = document.getElementById('themeToggle');
+  var currentTheme = 'light';
+  function apply(theme){
+    currentTheme = theme;
+    root.setAttribute('data-theme', theme);
+    btn.textContent = theme === 'dark' ? '◑' : '◐';
+  }
+  var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  apply(prefersDark ? 'dark' : 'light');
+  btn.addEventListener('click', function(){
+    apply(currentTheme === 'dark' ? 'light' : 'dark');
+  });
+})();
+(function(){
+  var tabs = document.querySelectorAll('.tab-btn');
+  tabs.forEach(function(tab){
+    tab.addEventListener('click', function(){
+      tabs.forEach(function(t){ t.classList.remove('active'); t.setAttribute('aria-selected','false'); });
+      document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('active'); });
+      tab.classList.add('active');
+      tab.setAttribute('aria-selected','true');
+      document.getElementById(tab.dataset.panel).classList.add('active');
+      window.scrollTo({top:0, behavior:'smooth'});
+    });
+  });
+})();
+</script>
+</body>
+</html>
